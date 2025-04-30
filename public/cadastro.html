@@ -66,6 +66,10 @@
             <input id="email_input" type="text" placeholder="meuemail@provedor.com" />
           </div>
           <div class="campo">
+            <span>CPF:</span>
+            <input id="cpf_input" type="text" placeholder="Apenas números. Ex.: 12345678911" />
+          </div>
+          <div class="campo">
             <span>Senha:</span>
             <input id="senha_input" type="password" placeholder="******" />
           </div>
@@ -108,15 +112,47 @@
     // Agora vá para o método fetch logo abaixo
     var nomeVar = nome_input.value;
     var emailVar = email_input.value;
+    var cpfVar = cpf_input.value;
     var senhaVar = senha_input.value;
     var confirmacaoSenhaVar = confirmacao_senha_input.value;
     var codigoVar = codigo_input.value;
     var idEmpresaVincular
 
+    // Atividade 3
+    if(nomeVar.length <= 1){
+      alert("Nome com 1 ou 0 caracteres!");
+      return;
+    }
+    testandoArroba = false;
+    for(let i = 0; i < emailVar.length; i++){
+      if(emailVar[emailVar.length - i] == "@"){
+        testandoArroba =true;
+      }
+    }
+    if(testandoArroba == false){
+      alert("E-mail precisa ter Arroba (@).");
+      return;
+    }
+
+    if(senhaVar.length <= 6){
+      alert("Senha menor que 6 caracteres.");
+      return;
+    }
+    if(confirmacaoSenhaVar != senhaVar){
+      alert("A senha deve ser a mesma da confirmação!");
+      return;
+    }
+    if(cpfVar.length != 11){
+      alert("O CPF deve ter 11 dígitos!");
+      return;
+    };
+
+
     // Verificando se há algum campo em branco
     if (
       nomeVar == "" ||
       emailVar == "" ||
+      cpfVar == "" ||
       senhaVar == "" ||
       confirmacaoSenhaVar == "" ||
       codigoVar == ""
@@ -155,6 +191,7 @@
         // Agora vá para o arquivo routes/usuario.js
         nomeServer: nomeVar,
         emailServer: emailVar,
+        cpfServer: cpfVar,
         senhaServer: senhaVar,
         idEmpresaVincularServer: idEmpresaVincular
       }),
