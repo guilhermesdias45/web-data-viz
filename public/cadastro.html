@@ -90,7 +90,7 @@
             <input id="input_confirm_password" type="password" placeholder="******" oninput="confirmPassword()" />
             <div id="invalid_confirm_password" class="invalid-feedback">Insira a senha novamente</div>
           </div>
-          <button class="credential-submit" id="credential_submit_button" onclick="checkAllSubmit()"
+          <button class="credential-submit" id="credential_submit_button" onclick="cadastrar()"
             onmouseover="checkAll()">Cadastrar</button>
         </div>
         <div class="login-redirect">
@@ -192,20 +192,6 @@ function emptyLastname(){
     }
 }
 
-function email(){
-    var emailVar = input_email.value;
-    let haveAt = emailVar.indexOf('@');
-    if(haveAt == -1){
-        input_email.style.border = "2px solid red";
-        invalid_email.innerHTML = "<img src='img/denied.png'> <span class='denied'> Email Inválido! </span>";
-        return false;
-    }else{
-        input_email.style.border = "2px solid green";
-        invalid_email.innerHTML = "<img src='img/accept.png'> <span class='accept'> Email Ok! </span>";
-        return true;
-    }
-}
-
 function cpf(){
     var cpfVar = input_cpf.value;
     cpfVar = cpfVar.replaceAll('.','');
@@ -223,6 +209,64 @@ function cpf(){
         invalid_cpf.innerHTML = "<img src='img/accept.png'> <span class='accept'> CPF Ok! </span>";
         return true;
     }   
+}
+
+function token(){
+      // Verificando se o código de ativação é de alguma empresa cadastrada
+      for (let i = 0; i < listaEmpresasCadastradas.length; i++) {
+        if (listaEmpresasCadastradas[i].token == codigoVar) {
+          input_token.style.border = "2px solid green";
+          invalid_token.innerHTML = "<img src='img/accept.png'> <span class='accept'> Token Ok! </span>";
+        idEmpresaVincular = listaEmpresasCadastradas[i].id
+        console.log("Código de ativação válido.");
+        break;
+      } else {
+        input_token.style.border = "2px solid red";
+        invalid_token.innerHTML = "<img src='img/denied.png'> <span class='denied'> Token Inválido! </span>";
+        // finalizarAguardar();
+      }
+    }
+  }
+
+function email(){
+    var emailVar = input_email.value;
+    let haveAt = emailVar.indexOf('@');
+    if(haveAt == -1){
+        input_email.style.border = "2px solid red";
+        invalid_email.innerHTML = "<img src='img/denied.png'> <span class='denied'> Email Inválido! </span>";
+        return false;
+    }else{
+        input_email.style.border = "2px solid green";
+        invalid_email.innerHTML = "<img src='img/accept.png'> <span class='accept'> Email Ok! </span>";
+        return true;
+    }
+}
+
+function phone(){
+    let phone = input_phone.value;
+    phone = phone.replaceAll('-','');
+    phone = phone.replaceAll('(','');
+    phone = phone.replaceAll(')','');
+    phone = phone.replaceAll(' ','');
+    phone = phone.replaceAll('+','');
+    let phoneLength = phone.length;
+    let text='';
+    if (phoneLength < 13 || phoneLength > 13){
+        input_phone.style.border = "2px solid red";
+        invalid_phone.innerHTML = "<img src='img/denied.png'> <span class='denied'> Número Inválido! </span>";
+        return false;
+    } else{
+        if(phone[4] != 9){
+            input_phone.style.border = "2px solid red";
+            invalid_phone.innerHTML = "<img src='img/denied.png'> <span class='denied'> O primeiro dígito do número deve ser '9'! </span>";
+            return false;
+        }
+        text = phone.replace(/(\d{2})(\d{2})(\d{5})(\d{4})/, "+$1 ($2) $3-$4");
+        input_phone.value=text;
+        invalid_phone.innerHTML = "<img src='img/accept.png'> <span class='accept'> Telefone Ok! </span>";
+        input_phone.style.border = "2px solid green";
+        return true;
+    }
 }
 
 function password(){
@@ -280,7 +324,7 @@ function checkAll(){
       }else{
         credential_submit_button.disabled = true;
         credential_submit_button.style.cursor = "not-allowed";
-        return false
+        return false;
       }
     }
     
@@ -294,36 +338,8 @@ function checkAll(){
       setInterval(sumirMensagem, 5000);
     } else{
       finalizarAguardar();
+      return false;
     }
-
-    // Verificando se há algum campo em branco
-
-
-    // ------------------------------------
-    let text = input_token.value;
-    if(text == ""){
-        input_token.style.border = "2px solid red";
-        invalid_token.innerHTML = "<img src='img/denied.png'> <span class='denied'> Token Inválido! </span>";
-        return false;
-    } else{
-        input_token.style.border = "2px solid green";
-        invalid_token.innerHTML = "<img src='img/accept.png'> <span class='accept'> Token Ok! </span>";
-    }
-
-    function token(){
-      // Verificando se o código de ativação é de alguma empresa cadastrada
-      for (let i = 0; i < listaEmpresasCadastradas.length; i++) {
-        if (listaEmpresasCadastradas[i].codigo_ativacao == codigoVar) {
-        idEmpresaVincular = listaEmpresasCadastradas[i].id
-        console.log("Código de ativação válido.");
-        break;
-      } else {
-        cardErro.style.display = "block";
-        mensagem_erro.innerHTML = "(Mensagem de erro para código inválido)";
-        finalizarAguardar();
-      }
-    }
-  }
 
     if(checkAll()){
       // Enviando o valor da nova input
@@ -336,8 +352,10 @@ function checkAll(){
         // crie um atributo que recebe o valor recuperado aqui
         // Agora vá para o arquivo routes/usuario.js
         nomeServer: nomeVar,
+        lastnameServer: lastnameValid,
         emailServer: emailVar,
         cpfServer: cpfVar,
+        phoneServer: phoneValid,
         senhaServer: senhaVar,
         idEmpresaVincularServer: idEmpresaVincular
       }),
@@ -381,7 +399,7 @@ function checkAll(){
             listaEmpresasCadastradas.push(empresa);
 
             console.log("listaEmpresasCadastradas")
-            console.log(listaEmpresasCadastradas[0].codigo_ativacao)
+            console.log(listaEmpresasCadastradas[0].token)
           });
         });
       })
