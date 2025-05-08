@@ -10,12 +10,12 @@
 
   <script src="./js/sessao.js"></script>
 
-  <link rel="stylesheet" href="./css/estilo.css" />
+  <link rel="stylesheet" href="Main/Website/styles/style.css" />
   <link rel="icon" href="./assets/icon/favicon2.ico" />
   <link rel="preconnect" href="https://fonts.gstatic.com" />
 </head>
 
-<body>
+<body onload="listar()">
   <div class="header">
     <div class="container">
 
@@ -90,8 +90,7 @@
             <input id="input_confirm_password" type="password" placeholder="******" oninput="confirmPassword()" />
             <div id="invalid_confirm_password" class="invalid-feedback">Insira a senha novamente</div>
           </div>
-          <button class="credential-submit" id="credential_submit_button" onclick="cadastrar()"
-            onmouseover="checkAll()">Cadastrar</button>
+          <button class="credential-submit" id="credential_submit_button" onclick="cadastrar()">Cadastrar</button>
         </div>
         <div class="login-redirect">
           <p>Já tem uma conta? <a href="login.html">Faça login</a></p>
@@ -180,8 +179,8 @@
 }
 
 function emptyLastname(){
-    let text = input_lastname.value;
-    if(text == ""){
+    var lastnameVar = input_lastname.value;
+    if(lastnameVar == ""){
         input_lastname.style.border = "2px solid red";
         invalid_lastname.innerHTML = "<img src='img/denied.png'><span class='denied'> Sobrenome Inválido! </span>";
         return false;
@@ -212,6 +211,7 @@ function cpf(){
 }
 
 function token(){
+  var codigoVar = input_token.value;
       // Verificando se o código de ativação é de alguma empresa cadastrada
       for (let i = 0; i < listaEmpresasCadastradas.length; i++) {
         if (listaEmpresasCadastradas[i].token == codigoVar) {
@@ -243,25 +243,25 @@ function email(){
 }
 
 function phone(){
-    let phone = input_phone.value;
-    phone = phone.replaceAll('-','');
-    phone = phone.replaceAll('(','');
-    phone = phone.replaceAll(')','');
-    phone = phone.replaceAll(' ','');
-    phone = phone.replaceAll('+','');
-    let phoneLength = phone.length;
+    var phoneVar = input_phone.value;
+    phoneVar = phoneVar.replaceAll('-','');
+    phoneVar = phoneVar.replaceAll('(','');
+    phoneVar = phoneVar.replaceAll(')','');
+    phoneVar = phoneVar.replaceAll(' ','');
+    phoneVar = phoneVar.replaceAll('+','');
+    let phoneLength = phoneVar.length;
     let text='';
     if (phoneLength < 13 || phoneLength > 13){
         input_phone.style.border = "2px solid red";
         invalid_phone.innerHTML = "<img src='img/denied.png'> <span class='denied'> Número Inválido! </span>";
         return false;
     } else{
-        if(phone[4] != 9){
+        if(phoneVar[4] != 9){
             input_phone.style.border = "2px solid red";
             invalid_phone.innerHTML = "<img src='img/denied.png'> <span class='denied'> O primeiro dígito do número deve ser '9'! </span>";
             return false;
         }
-        text = phone.replace(/(\d{2})(\d{2})(\d{5})(\d{4})/, "+$1 ($2) $3-$4");
+        text = phoneVar.replace(/(\d{2})(\d{2})(\d{5})(\d{4})/, "+$1 ($2) $3-$4");
         input_phone.value=text;
         invalid_phone.innerHTML = "<img src='img/accept.png'> <span class='accept'> Telefone Ok! </span>";
         input_phone.style.border = "2px solid green";
@@ -337,7 +337,7 @@ function checkAll(){
     if(checkAll()){
       setInterval(sumirMensagem, 5000);
     } else{
-      finalizarAguardar();
+      // finalizarAguardar();
       return false;
     }
 
@@ -352,7 +352,7 @@ function checkAll(){
         // crie um atributo que recebe o valor recuperado aqui
         // Agora vá para o arquivo routes/usuario.js
         nomeServer: nomeVar,
-        lastnameServer: lastnameValid,
+        lastnameServer: lastnameVar,
         emailServer: emailVar,
         cpfServer: cpfVar,
         phoneServer: phoneValid,
@@ -374,14 +374,14 @@ function checkAll(){
         }, "2000");
         
         limparFormulario();
-        finalizarAguardar();
+        // finalizarAguardar();
       } else {
         throw "Houve um erro ao tentar realizar o cadastro!";
       }
     })
     .catch(function (resposta) {
       console.log(`#ERRO: ${resposta}`);
-      finalizarAguardar();
+      // finalizarAguardar();
     });
   }
 
