@@ -158,92 +158,101 @@
   </div>
 </body>
 </html>
-<script src="js/vitagro.js"></script>
 
 <script>
 
   // Array para armazenar empresas cadastradas para validação de código de ativação 
   let listaEmpresasCadastradas = [];
 
+  var nomeVar = "";
+  var lastnameVar = "";
+  var cpfVar = "";
+  var codigoVar = "";
+  var emailVar = "";
+  var phoneVar = "";
+  var senhaVar = "";
+  var confirmacaoSenhaVar = "";
+  var idEmpresaVincular = 0;
+
   function emptyName(){
-    var nomeVar = input_name.value;
+    nomeVar = input_name.value;
     if(nomeVar == ""){
         input_name.style.border = "2px solid red";
-        invalid_name.innerHTML = "<img src='img/denied.png'> <span class='denied'> Nome Inválido! </span>";
+        invalid_name.innerHTML = "<img src='/Main/Website/img/denied.png'> <span class='denied'> Nome Inválido! </span>";
         return false;
     } else{
         input_name.style.border = "2px solid green";
-        invalid_name.innerHTML = "<img src='img/accept.png'> <span class='accept'> Nome Ok! </span>";
+        invalid_name.innerHTML = "<img src='/Main/Website/img/accept.png'> <span class='accept'> Nome Ok! </span>";
         return true;
     }
 }
 
 function emptyLastname(){
-    var lastnameVar = input_lastname.value;
+    lastnameVar = input_lastname.value;
     if(lastnameVar == ""){
         input_lastname.style.border = "2px solid red";
-        invalid_lastname.innerHTML = "<img src='img/denied.png'><span class='denied'> Sobrenome Inválido! </span>";
+        invalid_lastname.innerHTML = "<img src='/Main/Website/img/denied.png'><span class='denied'> Sobrenome Inválido! </span>";
         return false;
     } else{
         input_lastname.style.border = "2px solid green";
-        invalid_lastname.innerHTML = "<img src='img/accept.png'> <span class='accept'> Sobrenome Ok! </span>";
+        invalid_lastname.innerHTML = "<img src='/Main/Website/img/accept.png'> <span class='accept'> Sobrenome Ok! </span>";
         return true;
     }
 }
 
 function cpf(){
-    var cpfVar = input_cpf.value;
+    cpfVar = input_cpf.value;
     cpfVar = cpfVar.replaceAll('.','');
     cpfVar = cpfVar.replaceAll('-','');
     let cpfLength = cpfVar.length;
     let text='';
     if (cpfLength < 11 || cpfLength > 11){
         input_cpf.style.border = "2px solid red";
-        invalid_cpf.innerHTML = "<img src='img/denied.png'> <span class='denied'> O CPF deve ter 11 dígitos!</span>";
+        invalid_cpf.innerHTML = "<img src='/Main/Website/img/denied.png'> <span class='denied'> O CPF deve ter 11 dígitos!</span>";
         return false;
     } else{
         text = cpfVar.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
         input_cpf.value = text;
         input_cpf.style.border = "2px solid green";
-        invalid_cpf.innerHTML = "<img src='img/accept.png'> <span class='accept'> CPF Ok! </span>";
+        invalid_cpf.innerHTML = "<img src='/Main/Website/img/accept.png'> <span class='accept'> CPF Ok! </span>";
         return true;
     }   
 }
 
 function token(){
-  var codigoVar = input_token.value;
+  codigoVar = input_token.value;
       // Verificando se o código de ativação é de alguma empresa cadastrada
       for (let i = 0; i < listaEmpresasCadastradas.length; i++) {
         if (listaEmpresasCadastradas[i].token == codigoVar) {
           input_token.style.border = "2px solid green";
-          invalid_token.innerHTML = "<img src='img/accept.png'> <span class='accept'> Token Ok! </span>";
-        idEmpresaVincular = listaEmpresasCadastradas[i].id
+          invalid_token.innerHTML = "<img src='/Main/Website/img/accept.png'> <span class='accept'> Token Ok! </span>";
+        idEmpresaVincular = listaEmpresasCadastradas[i].idEmpresa
         console.log("Código de ativação válido.");
         break;
       } else {
         input_token.style.border = "2px solid red";
-        invalid_token.innerHTML = "<img src='img/denied.png'> <span class='denied'> Token Inválido! </span>";
+        invalid_token.innerHTML = "<img src='/Main/Website/img/denied.png'> <span class='denied'> Token Inválido! </span>";
         // finalizarAguardar();
       }
     }
   }
 
 function email(){
-    var emailVar = input_email.value;
+    emailVar = input_email.value;
     let haveAt = emailVar.indexOf('@');
     if(haveAt == -1){
         input_email.style.border = "2px solid red";
-        invalid_email.innerHTML = "<img src='img/denied.png'> <span class='denied'> Email Inválido! </span>";
+        invalid_email.innerHTML = "<img src='/Main/Website/img/denied.png'> <span class='denied'> Email Inválido! </span>";
         return false;
     }else{
         input_email.style.border = "2px solid green";
-        invalid_email.innerHTML = "<img src='img/accept.png'> <span class='accept'> Email Ok! </span>";
+        invalid_email.innerHTML = "<img src='/Main/Website/img/accept.png'> <span class='accept'> Email Ok! </span>";
         return true;
     }
 }
 
 function phone(){
-    var phoneVar = input_phone.value;
+    phoneVar = input_phone.value;
     phoneVar = phoneVar.replaceAll('-','');
     phoneVar = phoneVar.replaceAll('(','');
     phoneVar = phoneVar.replaceAll(')','');
@@ -253,24 +262,24 @@ function phone(){
     let text='';
     if (phoneLength < 13 || phoneLength > 13){
         input_phone.style.border = "2px solid red";
-        invalid_phone.innerHTML = "<img src='img/denied.png'> <span class='denied'> Número Inválido! </span>";
+        invalid_phone.innerHTML = "<img src='/Main/Website/img/denied.png'> <span class='denied'> Número Inválido! </span>";
         return false;
     } else{
         if(phoneVar[4] != 9){
             input_phone.style.border = "2px solid red";
-            invalid_phone.innerHTML = "<img src='img/denied.png'> <span class='denied'> O primeiro dígito do número deve ser '9'! </span>";
+            invalid_phone.innerHTML = "<img src='/Main/Website/img/denied.png'> <span class='denied'> O primeiro dígito do número deve ser '9'! </span>";
             return false;
         }
         text = phoneVar.replace(/(\d{2})(\d{2})(\d{5})(\d{4})/, "+$1 ($2) $3-$4");
         input_phone.value=text;
-        invalid_phone.innerHTML = "<img src='img/accept.png'> <span class='accept'> Telefone Ok! </span>";
+        invalid_phone.innerHTML = "<img src='/Main/Website/img/accept.png'> <span class='accept'> Telefone Ok! </span>";
         input_phone.style.border = "2px solid green";
         return true;
     }
 }
 
 function password(){
-    var senhaVar= input_password.value;
+    senhaVar = input_password.value;
     let passwordLength = senhaVar.length;
     let haveNumber = /\d/.test(senhaVar);
     let haveSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(senhaVar);
@@ -278,32 +287,32 @@ function password(){
     let haveUpper = /[A-Z]/.test(senhaVar);
     if(passwordLength < 8 || passwordLength > 20){
         input_password.style.border = "2px solid red";
-        invalid_password.innerHTML = "<img src='img/denied.png'> <span class='denied'> A senha deve ter entre 8 e 20 dígitos! </span>";
+        invalid_password.innerHTML = "<img src='/Main/Website/img/denied.png'> <span class='denied'> A senha deve ter entre 8 e 20 dígitos! </span>";
         return false;
     } else if(!haveNumber || !haveSpecial || !haveLower || !haveUpper){
         input_password.style.border = "2px solid red";
-        invalid_password.innerHTML = "<img src='img/denied.png'> <span class='denied'> A senha deve conter letras maiúsculas, minúsculas, números e caracteres especiais! </span>";
+        invalid_password.innerHTML = "<img src='/Main/Website/img/denied.png'> <span class='denied'> A senha deve conter letras maiúsculas, minúsculas, números e caracteres especiais! </span>";
         return false;
     } else{
         input_password.style.border = "2px solid green";
-        invalid_password.innerHTML = "<img src='img/accept.png'> <span class='accept'> Senha Ok! </span>";
+        invalid_password.innerHTML = "<img src='/Main/Website/img/accept.png'> <span class='accept'> Senha Ok! </span>";
         return true;
     }
 }
 
 function confirmPassword(){
-    var confirmacaoSenhaVar = input_confirm_password.value;
+    confirmacaoSenhaVar = input_confirm_password.value;
     if(confirmacaoSenhaVar != input_password.value ){
         input_confirm_password.style.border = "2px solid red";
-        invalid_confirm_password.innerHTML = "<img src='img/denied.png'> <span class='denied'> As senhas não conferem! </span>";
+        invalid_confirm_password.innerHTML = "<img src='/Main/Website/img/denied.png'> <span class='denied'> As senhas não conferem! </span>";
         return false;
     } else if(input_confirm_password.value == ""){
         input_confirm_password.style.border = "2px solid red";
-        invalid_confirm_password.innerHTML = "<img src='img/denied.png'> <span class='denied'> Esse campo não pode ficar vazio! </span>";
+        invalid_confirm_password.innerHTML = "<img src='/Main/Website/img/denied.png'> <span class='denied'> Esse campo não pode ficar vazio! </span>";
         return false;
     } else{
         input_confirm_password.style.border = "2px solid green";
-        invalid_confirm_password.innerHTML = "<img src='img/accept.png'> <span class='accept'> Senha Ok! </span>";
+        invalid_confirm_password.innerHTML = "<img src='/Main/Website/img/accept.png'> <span class='accept'> Senha Ok! </span>";
         return true;
     }
 }
@@ -334,15 +343,19 @@ function checkAll(){
       //Recupere o valor da nova input pelo nome do id
     // Agora vá para o método fetch logo abaixo
     
-    if(checkAll()){
+    // if(checkAll()){
+    // } else{
+    //   // finalizarAguardar();
+    //   return false;
+    // }
+    
+    // if(checkAll()){
       setInterval(sumirMensagem, 5000);
-    } else{
-      // finalizarAguardar();
-      return false;
-    }
-
-    if(checkAll()){
       // Enviando o valor da nova input
+
+//       console.log({
+//   nomeVar, lastnameVar, emailVar, cpfVar, phoneVar, senhaVar, idEmpresaVincular
+// });
       fetch("/usuarios/cadastrar", {
       method: "POST",
       headers: {
@@ -355,7 +368,7 @@ function checkAll(){
         lastnameServer: lastnameVar,
         emailServer: emailVar,
         cpfServer: cpfVar,
-        phoneServer: phoneValid,
+        phoneServer: phoneVar,
         senhaServer: senhaVar,
         idEmpresaVincularServer: idEmpresaVincular
       }),
@@ -383,7 +396,7 @@ function checkAll(){
       console.log(`#ERRO: ${resposta}`);
       // finalizarAguardar();
     });
-  }
+  // }
 
     return false;  
   }
@@ -409,6 +422,6 @@ function checkAll(){
   }
 
   function sumirMensagem() {
-    cardErro.style.display = "none";
+    // cardErro.style.display = "none";
   }
 </script>

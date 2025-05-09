@@ -56,7 +56,7 @@ function cadastrar(req, res) {
     var nome = req.body.nomeServer;
     var lastname = req.body.lastnameServer;
     var email = req.body.emailServer;
-    var  cpf = req.body.cpfServer;
+    var cpf = req.body.cpfServer;
     var phone = req.body.phoneServer;
     var senha = req.body.senhaServer;
     var fkEmpresa = req.body.idEmpresaVincularServer;
