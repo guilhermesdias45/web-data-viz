@@ -23,11 +23,17 @@ function cadastrar(nome, lastname, email, cpf, phone, senha, fkEmpresa) {
     INSERT INTO representante (nome_representante, cpf_representante, fkEmpresa, senha)
     VALUES 
     ('${nome} ${lastname}', '${cpf}', ${fkEmpresa}, '${senha}');
-    INSERT INTO contato_representante (email_representante, codigo_internacional, ddd, telefone, fkRepresentante)
-    VALUES ('${email}', '${codInternacional}', '${ddd}', '${telefone}', (select idRepresentante from representante where nome_representante = '${nome} ${lastname}' and cpf_representante = '${cpf}'));
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
-    return database.executar(instrucaoSql);
+
+    var instrucaoSql2 = `INSERT INTO contato_representante (email_representante, codigo_internacional, ddd, telefone, fkRepresentante)
+    VALUES ('${email}', '${codInternacional}', '${ddd}', '${telefone}', (select idRepresentante from representante where nome_representante = '${nome} ${lastname}' and cpf_representante = '${cpf}'));
+    `;
+    console.log("Executando a instrução SQL 2: \n" + instrucaoSql2);
+    
+    return database.executar(instrucaoSql).then(() => {
+        return database.executar(instrucaoSql2);
+    });
 }
 
 module.exports = {
