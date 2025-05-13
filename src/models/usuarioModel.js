@@ -33,6 +33,11 @@ function cadastrar(nome, lastname, email, cpf, phone, senha, fkEmpresa) {
     return database.executar(instrucaoSql).then(() => {
         return database.executar(instrucaoSql2);
     });
+    console.log("Executando a instrução SQL 2: \n" + instrucaoSql2);
+    
+    return database.executar(instrucaoSql).then(() => {
+        return database.executar(instrucaoSql2);
+    });
 }
 
 module.exports = {
